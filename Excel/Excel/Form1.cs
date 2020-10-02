@@ -16,11 +16,13 @@ namespace Excel
     public partial class Form1 : Form
     {
         RealEstateEntities context = new RealEstateEntities();
+
         List<Flat> Flats;
 
         Excel1.Application xlApp;
         Excel1.Workbook xlWB;
         Excel1.Worksheet xlSheet;
+
         public Form1()
         {
             InitializeComponent();
@@ -36,28 +38,28 @@ namespace Excel
 
             try
             {
-                
+
                 xlApp = new Excel1.Application();
 
-               
+
                 xlWB = xlApp.Workbooks.Add(Missing.Value);
 
-                
+
                 xlSheet = xlWB.ActiveSheet;
 
-                
-                CreateTable(); 
 
-               
+                CreateTable();
+
+
                 xlApp.Visible = true;
                 xlApp.UserControl = true;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 string errMsg = string.Format("Error: {0}\nLine: {1}", ex.Message, ex.Source);
                 MessageBox.Show(errMsg, "Error");
 
-                
+
                 xlWB.Close(false, Type.Missing, Type.Missing);
                 xlApp.Quit();
                 xlWB = null;
@@ -106,7 +108,37 @@ namespace Excel
             xlSheet.get_Range(
              GetCell(2, 1),
              GetCell(1 + values.GetLength(0), values.GetLength(1))).Value2 = values;
+
+            int lastRowID = xlSheet.UsedRange.Rows.Count;
+
+            Excel1.Range headerRange = xlSheet.get_Range(GetCell(1, 1), GetCell(1, headers.Length));
+            Excel1.Range sheetRange = xlSheet.get_Range(GetCell(1, 1), GetCell(lastRowID, headers.Length));
+            Excel1.Range firstcolumnRange = xlSheet.get_Range(GetCell(2, 1), GetCell(counter, 1));
+            Excel1.Range lastcolumnRange = xlSheet.get_Range(GetCell(2, headers.Length), GetCell(counter, headers.Length));
+
+            headerRange.Font.Bold = true;
+            headerRange.VerticalAlignment = Excel1.XlVAlign.xlVAlignCenter;
+            headerRange.HorizontalAlignment = Excel1.XlHAlign.xlHAlignCenter;
+            headerRange.EntireColumn.AutoFit();
+            headerRange.RowHeight = 40;
+            headerRange.Interior.Color = Color.LightBlue;
+            headerRange.BorderAround2(Excel1.XlLineStyle.xlContinuous, Excel1.XlBorderWeight.xlThick);
+
+            sheetRange.BorderAround2(Excel1.XlLineStyle.xlContinuous, Excel1.XlBorderWeight.xlThick);
+            firstcolumnRange.Font.Bold = true;
+            firstcolumnRange.Interior.Color = Color.LightYellow;
+            lastcolumnRange.Interior.Color = Color.LightGreen;
+
+
+
+
+
         }
+
+        
+
+           
+        
 
         private string GetCell(int x, int y)
         {
