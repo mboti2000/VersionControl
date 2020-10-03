@@ -15,8 +15,7 @@ namespace Excel
 {
     public partial class Form1 : Form
     {
-        RealEstateEntities context = new RealEstateEntities();
-
+        RealEstateEntities1 context = new RealEstateEntities1();
         List<Flat> Flats;
 
         Excel1.Application xlApp;
@@ -26,8 +25,10 @@ namespace Excel
         public Form1()
         {
             InitializeComponent();
+            context.Flats.Load();
             LoadData();
             CreateExcel();
+           
         }
 
         public void LoadData() {
@@ -90,6 +91,7 @@ namespace Excel
             object[,] values = new object[Flats.Count, headers.Length];
 
             int counter = 0;
+
             foreach (Flat flat in Flats)
             {
                 values[counter, 0] = flat.Code;
@@ -100,8 +102,9 @@ namespace Excel
                 values[counter, 5] = flat.NumberOfRooms;
                 values[counter, 6] = flat.FloorArea;
                 values[counter, 7] = flat.Price;
-                values[counter, 8] = "=GetCell(counter+1,5)/GetCell(counter+1,7)";
-
+ 
+               
+                values[counter, 8] = "="+ GetCell(counter + 2, 8) + "/"+ GetCell(counter + 2, 7);
                 counter++;
             }
 
