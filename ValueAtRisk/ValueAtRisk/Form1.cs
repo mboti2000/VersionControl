@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.Entity;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,7 @@ namespace ValueAtRisk
     {
         PortfolioEntities context = new PortfolioEntities();
         List<Tick> Ticks;
+        List<decimal> Nyereségek = new List<decimal>();
 
         List<PortfolioItem> Portfolio = new List<PortfolioItem>();
         public Form1()
@@ -26,8 +28,23 @@ namespace ValueAtRisk
             dataGridView1.DataSource = Ticks;
 
             CreatePortfolio();
+            Earnings();
 
-            List<decimal> Nyereségek = new List<decimal>();
+           
+        }
+
+        private void CreatePortfolio() {
+
+            Portfolio.Add(new PortfolioItem() { Index = "OTP", Volume = 10 });
+            Portfolio.Add(new PortfolioItem() { Index = "ZWACK", Volume = 10 });
+            Portfolio.Add(new PortfolioItem() { Index = "ELMU", Volume = 10 });
+
+            dataGridView2.DataSource = Portfolio;
+        }
+
+        public void Earnings() {
+
+            
             int intervalum = 30;
             DateTime kezdőDátum = (from x in Ticks select x.TradingDay).Min();
             DateTime záróDátum = new DateTime(2016, 12, 30);
@@ -46,16 +63,6 @@ namespace ValueAtRisk
                                         .ToList();
             MessageBox.Show(nyereségekRendezve[nyereségekRendezve.Count() / 5].ToString());
         }
-
-        private void CreatePortfolio() {
-
-            Portfolio.Add(new PortfolioItem() { Index = "OTP", Volume = 10 });
-            Portfolio.Add(new PortfolioItem() { Index = "ZWACK", Volume = 10 });
-            Portfolio.Add(new PortfolioItem() { Index = "ELMU", Volume = 10 });
-
-            dataGridView2.DataSource = Portfolio;
-        }
-
         private decimal GetPortfolioValue(DateTime date)
         {
             decimal value = 0;
@@ -70,5 +77,36 @@ namespace ValueAtRisk
             }
             return value;
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog sfd = new SaveFileDialog();
+
+            if (sfd.ShowDialog() != DialogResult.OK) return;
+
+
+                StreamWriter sw = new StreamWriter(sfd.FileName, false, Encoding.UTF8);
+
+                sw.Write("Időszak");
+                sw.Write(";");
+                sw.Write("Nyereség");
+                sw.WriteLine();
+
+                var i = 1;
+
+            foreach (var p in Nyereségek)
+            {
+                sw.Write(i);
+                sw.Write(";");
+                sw.Write(p);
+                sw.WriteLine();
+
+                i++;
+
+            }
+                sw.Close();
+            }
+            
+        }
     }
-}
+
