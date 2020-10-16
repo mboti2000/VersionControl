@@ -9,12 +9,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace MNB
 {
     public partial class Form1 : Form
     {
         BindingList<RateData> Rates = new BindingList<RateData>();
+        public string result;
         
         
         public Form1()
@@ -23,9 +25,10 @@ namespace MNB
 
             dataGridView1.DataSource = Rates;
             getCurrencyRates();
+            processXML();
         }
 
-        private void getCurrencyRates() { 
+        public void getCurrencyRates() { 
 
             var mnbService = new MNBArfolyamServiceSoapClient();
 
@@ -38,6 +41,34 @@ namespace MNB
             };
 
             var response = mnbService.GetExchangeRates(request);
+             
+           result = response.GetExchangeRatesResult;
+        }
+
+        public void processXML() {
+
+            var xml = new XmlDocument();
+            xml.LoadXml(result);
+
+            foreach (XmlElement el in xml.DocumentElement)
+            {
+                RateData rd = new RateData();
+                Rates.Add(rd);
+
+                rd.Date = DateTime.Parse(el.GetAttribute("date"));
+
+                var firstChild = (XmlElement)el.ChildNodes[0];
+                rd.Currency = firstChild.GetAttribute("curr");
+
+                var currUnit = Decimal.Parse(firstChild.GetAttribute("unit"));
+                var unitValue = Decimal.Parse(firstChild.InnerText);
+                if (currUnit!=0) {
+                    rd.Value = unitValue / currUnit;
+                }
+                
+
+
+            }
         }
     }
 }
