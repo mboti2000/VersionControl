@@ -1,4 +1,5 @@
-﻿using MNB.MNBserviceReference;
+﻿using MNB.Entities;
+using MNB.MNBserviceReference;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,9 +14,15 @@ namespace MNB
 {
     public partial class Form1 : Form
     {
+        BindingList<RateData> Rates = new BindingList<RateData>();
+        
+        
         public Form1()
         {
             InitializeComponent();
+
+            dataGridView1.DataSource = Rates;
+            getCurrencyRates();
         }
 
         private void getCurrencyRates() { 
