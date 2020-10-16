@@ -24,6 +24,13 @@ namespace MNB
         {
             InitializeComponent();
 
+            RefreshData();
+            
+        }
+
+        private void RefreshData() {
+
+            Rates.Clear();
             dataGridView1.DataSource = Rates;
             getCurrencyRates();
             processXML();
@@ -36,9 +43,9 @@ namespace MNB
 
             var request = new GetExchangeRatesRequestBody()
             {
-                currencyNames = "EUR",
-                startDate = "2020-01-01",
-                endDate = "2020-06-30"
+                currencyNames = (string)comboBox1.SelectedItem,
+                startDate = dateTimePicker1.Value.ToString(),
+                endDate = dateTimePicker2.Value.ToString()
             };
 
          
@@ -53,22 +60,21 @@ namespace MNB
             var xml = new XmlDocument();
             xml.LoadXml(result);
 
-            // Végigmegünk a dokumentum fő elemének gyermekein
+            
             foreach (XmlElement element in xml.DocumentElement)
             {
-                // Létrehozzuk az adatsort és rögtön hozzáadjuk a listához
-                // Mivel ez egy referencia típusú változó, megtehetjük, hogy előbb adjuk a listához és csak később töltjük fel a tulajdonságait
+                
                 var rate = new RateData();
                 Rates.Add(rate);
 
-                // Dátum
+                
                 rate.Date = DateTime.Parse(element.GetAttribute("date"));
 
-                // Valuta
+             
                 var childElement = (XmlElement)element.ChildNodes[0];
                 rate.Currency = childElement.GetAttribute("curr");
 
-                // Érték
+                
                 var unit = decimal.Parse(childElement.GetAttribute("unit"));
                 var value = decimal.Parse(childElement.InnerText);
                 if (unit != 0)
@@ -92,6 +98,21 @@ namespace MNB
             chartArea.AxisY.MajorGrid.Enabled = false;
             chartArea.AxisY.IsStartedFromZero = false;
 
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void dateTimePicker2_ValueChanged(object sender, EventArgs e)
+        {
+            RefreshData();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RefreshData();
         }
     }
 }
