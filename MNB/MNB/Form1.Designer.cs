@@ -47,7 +47,7 @@
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowHeadersWidth = 51;
             this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.Size = new System.Drawing.Size(347, 367);
+            this.dataGridView1.Size = new System.Drawing.Size(458, 367);
             this.dataGridView1.TabIndex = 0;
             // 
             // chartRateData
@@ -56,13 +56,13 @@
             this.chartRateData.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             this.chartRateData.Legends.Add(legend1);
-            this.chartRateData.Location = new System.Drawing.Point(412, 45);
+            this.chartRateData.Location = new System.Drawing.Point(511, 45);
             this.chartRateData.Name = "chartRateData";
             series1.ChartArea = "ChartArea1";
             series1.Legend = "Legend1";
             series1.Name = "Series1";
             this.chartRateData.Series.Add(series1);
-            this.chartRateData.Size = new System.Drawing.Size(602, 367);
+            this.chartRateData.Size = new System.Drawing.Size(503, 367);
             this.chartRateData.TabIndex = 1;
             this.chartRateData.Text = "chart1";
             // 
