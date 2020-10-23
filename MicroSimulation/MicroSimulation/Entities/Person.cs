@@ -13,6 +13,12 @@ namespace MicroSimulation.Entities
         public int numberOfChildren { get; set; }
         public bool isALive { get; set; }
 
-        
+        public Person()
+        {
+            isALive = true;
+        }
     }
+
+   
+
 }
