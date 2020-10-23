@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MicroSimulation.Entities
 {
-    class Person
+    public class Person
     {
         public int yearOfBirth { get; set; }
         public Gender Gender { get; set; }
