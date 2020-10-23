@@ -33,7 +33,7 @@ namespace MicroSimulation
             {
                 for (int i = 0; i < Population.Count; i++)
                 {
-
+                    SimStep(year,Population[i]);
                 }
 
                 int maleNbr = (from x in Population where x.Gender == Gender.Male && x.isALive select x).Count();
@@ -108,6 +108,36 @@ namespace MicroSimulation
             }
 
             return deathprobabilities;
+        }
+
+        public void SimStep(int year, Person person) {
+            if (!person.isALive) return;
+
+            int age = year - person.yearOfBirth;
+
+            double deathprob = (from x in DeathProbabilities where x.Age==age && x.Gender == person.Gender select x.Probability).FirstOrDefault();
+
+            if (rnd.NextDouble() <= deathprob) {
+                person.isALive = false;
+            }
+
+            if (person.isALive && person.Gender == Gender.Female) {
+                double birthprob = (from x in BirthProbabilities where x.Age == age && x.numberOfChildren == person.numberOfChildren select x.Probability).FirstOrDefault();
+
+                if (rnd.NextDouble() <= birthprob)
+                {
+                    person.numberOfChildren++;
+                    Person newBorn = new Person();
+                    newBorn.yearOfBirth = year;
+                    newBorn.Gender = (Gender)(rnd.Next(1,3));
+                    newBorn.numberOfChildren = 0;
+                    Population.Add(newBorn);
+
+                }
+
+            }
+
+
         }
     }
 }
