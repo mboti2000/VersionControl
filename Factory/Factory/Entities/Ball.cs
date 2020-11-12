@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Factory.Entities
 {
-    class Ball : Label
+    public class Ball : Label
     {
         public Ball() {
             AutoSize = false;
