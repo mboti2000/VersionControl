@@ -78,5 +78,15 @@ namespace Factory
             _nextToy.Left = label1.Left;
             Controls.Add(_nextToy);
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var button = (Button)sender;
+            var colorDialog = new ColorDialog();
+            colorDialog.Color = button.BackColor;
+
+            if (colorDialog.ShowDialog() != DialogResult.OK) return;
+            button.BackColor = colorDialog.Color;
+        }
     }
 }
