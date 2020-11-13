@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Factory.Entities
 {
-    class Car : Toy
+    public class Car : Toy
     {
         protected override void DrawImage(Graphics g)
         {
