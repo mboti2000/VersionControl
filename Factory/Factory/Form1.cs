@@ -62,7 +62,7 @@ namespace Factory
         private void BallButon_Click(object sender, EventArgs e)
         {
             Factory = new BallFactory() {
-                BallColor = button1.BackColor;
+                BallColor = button1.BackColor
             };
             
         }
@@ -91,6 +91,16 @@ namespace Factory
             if (colorDialog.ShowDialog() != DialogResult.OK) return;
             button.BackColor = colorDialog.Color;
             
+        }
+
+        private void presentButton_Click(object sender, EventArgs e)
+        {
+            Factory = new PresentFactory()
+            {
+                Box = boxColor.BackColor,
+                Ribbon = ribbonColor.BackColor
+            };
+
         }
     }
 }
