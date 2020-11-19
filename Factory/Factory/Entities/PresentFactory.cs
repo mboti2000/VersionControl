@@ -11,7 +11,7 @@ namespace Factory.Entities
     public class PresentFactory : IToyFactory
     {
         public Color Box { get; set; }
-       public Color Ribbon{ get; set; }
+        public Color Ribbon{ get; set; }
         public Toy CreateNew()
         {
             return new Present(Box,Ribbon);
