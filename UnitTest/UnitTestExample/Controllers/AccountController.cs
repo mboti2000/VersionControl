@@ -20,6 +20,9 @@ namespace UnitTestExample.Controllers
             AccountManager = new AccountManager();
         }
 
+     
+
+
         public Account Register(string email, string password)
         {
             if(!ValidateEmail(email))
