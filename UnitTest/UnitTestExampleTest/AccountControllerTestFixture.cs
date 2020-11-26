@@ -44,13 +44,14 @@ namespace UnitTestExampleTest
             TestCase("cristiano.ronaldo@uni-corvinus.hu","MaczkoBotond7"),
              TestCase("maczko.botond@gmail.com", "Password123")
             ]
+
         public void TestRegisterHappypath(string email, string password)
         {
             var AC = new AccountController();
             var account = AC.Register(email,password);
             Assert.AreEqual(account.Email,email);
             Assert.AreEqual(account.Password, password);
-            Assert.AreEqual(account.ID, Guid.Empty);
+            Assert.AreNotEqual(Guid.Empty,account.ID);
         }
 
 
